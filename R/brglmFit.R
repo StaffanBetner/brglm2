@@ -326,7 +326,7 @@ brglmFit <- function (x, y, weights = rep(1, nobs), start = NULL, etastart = NUL
             out$d2mus <- d2mus
             out$varmus <- varmus
             out$d1varmus <- d1variance(mus)
-            out$working_weights <- working_weights
+            out$working_weights <- working_weights            
             if (qr) out$qr_decomposition <- qr(wx)
             out
         }
@@ -584,6 +584,20 @@ brglmFit <- function (x, y, weights = rep(1, nobs), start = NULL, etastart = NUL
         })
     }
 
+    ridge <- function(pars, level = 0, fit = NULL) {
+        if (is.null(fit)) {
+            fit <- key_quantities(pars, y = y, level = level, qr = TRUE)
+        }
+        with(fit, {
+            if (level == 0) {                
+                return(- 2 * R %*% pars[1:nvars])
+            }
+            if (level == 1) {
+                return(0)
+            }
+        })
+    }
+    
 
     ## compute_step_components does everything on the scale of the /transformed/ dispersion
     compute_step_components <- function(pars, level = 0, fit = NULL) {
@@ -635,6 +649,7 @@ brglmFit <- function (x, y, weights = rep(1, nobs), start = NULL, etastart = NUL
                             "AS_median" = AS_median_adjustment,
                             "AS_mixed" = AS_mixed_adjustment,
                             "MPL_Jeffreys" = AS_Jeffreys_adjustment,
+                            "generalized_ridge" = ridge,
                             "ML" = function(pars, ...) 0)
 
     ## Some useful quantities
@@ -792,6 +807,21 @@ brglmFit <- function (x, y, weights = rep(1, nobs), start = NULL, etastart = NUL
             nvars_all <- nvars
             betas_names_all <- betas_names
         }
+
+        ## generalized ridge (no checks on dimension are being made; default is no penalization)
+        R <- control$R
+        if (is.null(R)) {
+            R <- matrix(0, nvars_all, nvars_all)
+        }
+        if (identical(dim(R), c(nvars_all, nvars_all))) {
+            if (!isTRUE(is_full_rank)) {
+                R <- R[-aliased, -aliased]
+            }
+        }
+        else {
+            stop("R has the wrong dimension")
+        }
+        
         betas_all <- structure(rep(NA_real_, nvars_all), .Names = betas_names_all)
         keep <- weights > 0
         ## Check for zero weights

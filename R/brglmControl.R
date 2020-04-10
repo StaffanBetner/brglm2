@@ -155,12 +155,13 @@
 #' @export
 brglmControl <- function(epsilon = 1e-06, maxit = 100,
                          trace = FALSE,
-                         type = c("AS_mixed", "AS_mean", "AS_median", "correction", "MPL_Jeffreys", "ML"),
+                         type = c("AS_mixed", "AS_mean", "AS_median", "correction", "MPL_Jeffreys", "ML", "generalized_ridge"),
                          transformation = "identity",
                          slowit = 1,
                          response_adjustment = NULL,
                          max_step_factor = 12,
-                         a = 1/2) {
+                         a = 1/2,
+                         R = NULL) {
     type <- match.arg(type)
 
     if (is.character(transformation)) {
@@ -198,6 +199,7 @@ brglmControl <- function(epsilon = 1e-06, maxit = 100,
          transformation = transformation,
          slowit = slowit,
          max_step_factor = max_step_factor,
-         a = a)
+         a = a,
+         R = R)
 }
 
