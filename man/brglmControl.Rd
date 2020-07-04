@@ -10,24 +10,28 @@ brglmControl(
   epsilon = 1e-06,
   maxit = 100,
   trace = FALSE,
-  type = c("AS_mixed", "AS_mean", "AS_median", "correction", "MPL_Jeffreys", "ML"),
+  type = c("AS_mixed", "AS_mean", "AS_median", "correction", "MPL_Jeffreys", "ML",
+    "generalized_ridge"),
   transformation = "identity",
   slowit = 1,
   response_adjustment = NULL,
   max_step_factor = 12,
-  a = 1/2
+  a = 1/2,
+  R = NULL
 )
 
 brglm_control(
   epsilon = 1e-06,
   maxit = 100,
   trace = FALSE,
-  type = c("AS_mixed", "AS_mean", "AS_median", "correction", "MPL_Jeffreys", "ML"),
+  type = c("AS_mixed", "AS_mean", "AS_median", "correction", "MPL_Jeffreys", "ML",
+    "generalized_ridge"),
   transformation = "identity",
   slowit = 1,
   response_adjustment = NULL,
   max_step_factor = 12,
-  a = 1/2
+  a = 1/2,
+  R = NULL
 )
 }
 \arguments{
