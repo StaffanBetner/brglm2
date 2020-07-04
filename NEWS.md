@@ -1,8 +1,13 @@
 # brglm2 0.7.0
 
+## New functionality
+* `confint` method for `brmulitnom` objects
+
+
 ## Other improvements, updates and additions
 * Updated reference to [Kosmidis et al (2020)](https://doi.org/10.1093/biomet/asx046)
 * Fixed issues with references
+
 
 # brglm2 0.6.2
 

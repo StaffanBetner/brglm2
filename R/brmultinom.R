@@ -498,6 +498,8 @@ predict.brmultinom <- function(object, newdata, type = c("class", "probs"), ...)
 #'
 #' @export
 confint.brmultinom <- function (object, parm, level = 0.95, ...)  {
+    ## Apart from formatting changes this function is identical to
+    ## nnet:::confint.multinom
     cf <- coef(object)
     pnames <- if (is.matrix(cf)) colnames(cf) else names(cf)
     if (missing(parm)) {
